@@ -13,11 +13,31 @@ const { NotImplementedError } = require('../lib');
  * transform([1, 2, 3, '--discard-prev', 4, 5]) => [1, 2, 4, 5]
  *
  */
-function transform(/* arr */) {
-  // Remove line below and write your code here
-  throw new NotImplementedError('Not implemented');
+function transform(arr) {
+  if (!Array.isArray(arr)) return 'Error!';
+  const res = [];
+  for (let i = 0; i < arr.length; i++) {
+    const cur = arr[i];
+    switch (cur) {
+      case '--discard-next':
+        if (i + 1 < arr.length) i++;
+        break;
+      case '--discard-prev':
+        if (i > 0 && arr[i - 2] !== '--discard-next') res.pop();
+        break;
+      case '--double-next':
+        if (i + 1 < arr.length) res.push(arr[i + 1]);
+        break;
+      case '--double-prev':
+        if (i > 0 && arr[i - 2] !== '--discard-next') res.push(arr[i - 1]);
+        break;
+      default:
+        res.push(cur);
+    }
+  }
+  return res;
 }
 
 module.exports = {
-  transform
+  transform,
 };
